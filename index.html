@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#F7F5F2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Huellitas">
+<title>Huellitas</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23C93D22'/%3E%3Cg fill='white' transform='translate(2.4 2.4) scale(.8)'%3E%3Ccircle cx='6' cy='9' r='2.4'/%3E%3Ccircle cx='10' cy='5' r='2.4'/%3E%3Ccircle cx='14' cy='5' r='2.4'/%3E%3Ccircle cx='18' cy='9' r='2.4'/%3E%3Cpath d='M12 10.5c-3 0-6 4.3-6 6.6 0 1.8 1.5 2.9 3.2 2.9 1.2 0 1.9-.6 2.8-.6s1.6.6 2.8.6c1.7 0 3.2-1.1 3.2-2.9 0-2.3-3-6.6-6-6.6z'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23C93D22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{--accent:#C93D22;--ink:#1D1B2E;--muted:#5E5B6E;--muted2:#6E6B7E;--ground:#F7F5F2;--line:#ECE8E3;--like:#0B7A5C;--nope:#B3261E;--super:#1F5FBF}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#E9E5DF;font-family:'Nunito',system-ui,sans-serif;color:var(--ink);overscroll-behavior:none}
+button{font-family:inherit;cursor:pointer;color:inherit}
+input{font-family:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.app{position:relative;max-width:480px;margin:0 auto;height:100vh;height:100dvh;background:var(--ground);display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top)}
+.disp{font-family:'Fredoka',sans-serif}
+.screen{flex:1;display:flex;flex-direction:column;min-height:0}
+.scroll{overflow-y:auto}
+header.top{height:64px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:8px}
+.logo span{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;letter-spacing:-.5px}
+.iconbtn{width:44px;height:44px;border-radius:22px;border:1px solid #E4E0DA;background:#fff;display:flex;align-items:center;justify-content:center;padding:0}
+.deck{flex:1;position:relative;margin:4px 16px 0;min-height:0}
+.card{position:absolute;inset:0;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;background:#fff;box-shadow:0 6px 24px rgba(29,27,46,.14);touch-action:none;user-select:none;will-change:transform}
+.card.anim{transition:transform .34s ease,opacity .34s ease}
+.card.back{transform:scale(.94) translateY(14px);box-shadow:0 2px 8px rgba(29,27,46,.08);transition:transform .3s ease}
+.photo{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0}
+.photo svg.pet{width:min(220px,60%);height:auto}
+.pill{position:absolute;top:16px;background:rgba(255,255,255,.92);padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+.stamp{position:absolute;top:64px;border:4px solid;background:rgba(255,255,255,.85);padding:4px 14px;border-radius:10px;font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;letter-spacing:1px;opacity:0;pointer-events:none}
+.stamp.like{left:22px;transform:rotate(-14deg);color:var(--like);border-color:var(--like)}
+.stamp.nope{right:22px;transform:rotate(14deg);color:var(--nope);border-color:var(--nope)}
+.stamp.sup{top:auto;bottom:24px;left:50%;transform:translateX(-50%) rotate(-6deg);color:var(--super);border-color:var(--super);font-size:26px;white-space:nowrap}
+.info{background:#fff;padding:16px 20px 18px;display:flex;flex-direction:column;gap:8px}
+.info h2{margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:30px;line-height:1}
+.info .age{font-size:18px;font-weight:600;color:var(--muted)}
+.info p{margin:0}
+.breed{font-size:14px;font-weight:700;color:var(--muted)}
+.bio{font-size:15px;line-height:1.4;color:#3A3848}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.tag{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#F1EEEA;color:#3A3848}
+.empty{position:absolute;inset:0;border-radius:28px;border:2px dashed #D8D3CC;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center}
+.empty h2{margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px}
+.empty p{margin:0;font-size:15px;color:var(--muted);line-height:1.4}
+.primary{height:48px;padding:0 24px;border-radius:24px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:800}
+.actions{height:104px;display:flex;align-items:center;justify-content:center;gap:16px;flex-shrink:0}
+.act{border-radius:50%;border:none;background:#fff;box-shadow:0 2px 10px rgba(29,27,46,.12);display:flex;align-items:center;justify-content:center;padding:0;transition:transform .12s}
+.act:active{transform:scale(.9)}
+.act.s{width:48px;height:48px}.act.l{width:64px;height:64px}
+.act.heart{background:var(--accent);box-shadow:0 4px 14px rgba(201,61,34,.35)}
+h1.title{margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:28px;padding:20px 20px 8px}
+.label{margin:0 20px 12px;font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
+.newrow{display:flex;gap:14px;overflow-x:auto;padding:0 20px 8px}
+.newm{border:none;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;width:72px;flex-shrink:0}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;color:var(--ink);flex-shrink:0}
+.convo{width:100%;border:none;background:none;padding:12px 20px;display:flex;align-items:center;gap:14px;text-align:left}
+.convo .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.convo .last{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chathead{height:72px;padding:0 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:#fff}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.b{max-width:75%;padding:10px 14px;font-size:15px;line-height:1.35;word-wrap:break-word}
+.b.me{align-self:flex-end;background:var(--accent);color:#fff;border-radius:18px 18px 4px 18px}
+.b.them{align-self:flex-start;background:#fff;border-radius:18px 18px 18px 4px;box-shadow:0 1px 2px rgba(29,27,46,.08)}
+.composer{display:flex;gap:8px;padding:12px 12px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);margin:0;background:#fff}
+.composer input{flex:1;height:48px;border-radius:24px;border:1px solid #DCD7D0;padding:0 18px;font-size:16px;outline-color:var(--accent);background:#fff;color:var(--ink)}
+.box{margin:16px 20px 0;background:#fff;border-radius:24px;padding:16px 20px}
+.row{display:flex;align-items:center;justify-content:space-between;min-height:52px;border-bottom:1px solid #F1EEEA}
+.row:last-child{border-bottom:none}
+.sw{width:52px;height:32px;border-radius:16px;border:none;padding:3px;background:#C9C4BD;display:flex;justify-content:flex-start;transition:background .2s}
+.sw[aria-pressed=true]{background:var(--accent);justify-content:flex-end}
+.sw span{width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+nav.tabs{height:calc(68px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr)}
+nav.tabs button{border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--muted2);position:relative;font-size:12px;font-weight:800}
+nav.tabs button.on{color:var(--accent)}
+.badge{position:absolute;top:8px;left:50%;margin-left:6px;min-width:20px;height:20px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.modal{position:absolute;inset:0;background:rgba(29,27,46,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:32px;text-align:center;z-index:10;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal .big{margin:0;font-family:'Fredoka',sans-serif;font-weight:700;font-size:44px;color:#fff;line-height:1.05;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}
+.modal .wide{width:100%;height:52px;border-radius:26px;font-size:17px;font-weight:800}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+const PAW='<circle cx="6" cy="9" r="2.4"/><circle cx="10" cy="5" r="2.4"/><circle cx="14" cy="5" r="2.4"/><circle cx="18" cy="9" r="2.4"/><path d="M12 10.5c-3 0-6 4.3-6 6.6 0 1.8 1.5 2.9 3.2 2.9 1.2 0 1.9-.6 2.8-.6s1.6.6 2.8.6c1.7 0 3.2-1.1 3.2-2.9 0-2.3-3-6.6-6-6.6z"/>';
+const HEART='<path d="M12 21s-8-5.2-8-11.2A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 2.8C20 15.8 12 21 12 21z"/>';
+
+const PETS=[
+ {id:'luna',name:'Luna',age:'3 años',breed:'Golden retriever',dist:'a 2 km',hood:'Palermo',photos:'1/4',bio:'Fanática de la pelota. Busco compañía para correr en los bosques los domingos.',tags:['Juguetona','Sociable','Grande'],bg:'#F6DDB5',fur:'#D9973F',ear:'#B9772A',cat:false,likesYou:true},
+ {id:'toto',name:'Toto',age:'2 años',breed:'Gato naranja de la calle',dist:'a 1 km',hood:'Villa Crespo',photos:'1/3',bio:'Tranqui, de siesta larga. Me copan las ventanas con sol y los gatos sin drama.',tags:['Tranquilo','Indoor','Castrado'],bg:'#FCE3CF',fur:'#E8863A',ear:'#C76A22',cat:true,likesYou:false},
+ {id:'milo',name:'Milo',age:'1 año',breed:'Beagle',dist:'a 4 km',hood:'Caballito',photos:'1/5',bio:'Cachorro con energía infinita. Mi nariz me lleva a todos lados, sobre todo a la plaza.',tags:['Cachorro','Energético','Mediano'],bg:'#DDE8D2',fur:'#C98A4B',ear:'#7A4E2A',cat:false,likesYou:true},
+ {id:'nina',name:'Nina',age:'5 años',breed:'Siamesa',dist:'a 3 km',hood:'Almagro',photos:'1/2',bio:'Charlatana y curiosa. Busco amistad gatuna para compartir rascador.',tags:['Curiosa','Vacunada','Indoor'],bg:'#E3E0F2',fur:'#EFE3CF',ear:'#5C4636',cat:true,likesYou:true},
+ {id:'rocco',name:'Rocco',age:'4 años',breed:'Bulldog francés',dist:'a 6 km',hood:'Belgrano',photos:'1/3',bio:'Ronco, babeo y soy el alma de la fiesta. Paseos cortitos, mimos largos.',tags:['Mimoso','Chico','Sociable'],bg:'#D6E4F0',fur:'#8C8C8C',ear:'#5E5E5E',cat:false,likesYou:false},
+ {id:'coco',name:'Coco',age:'6 años',breed:'Caniche',dist:'a 2 km',hood:'Colegiales',photos:'1/4',bio:'Señora elegante pero juguetona. Busco compañero de café al aire libre.',tags:['Educada','Chica','Vacunada'],bg:'#F3D9DF',fur:'#F2EDE6',ear:'#D8CFC4',cat:false,likesYou:true}
+];
+const REPLIES=['¡Dale! ¿Plaza o parque?','Me encanta la idea, ¿el sábado a la tarde?','Guau guau (eso es un sí)','¿Firulais se lleva bien con otros perros?','Llevo la pelota, vos traé las ganas'];
+
+const S={
+ tab:'discover',idx:0,history:[],busy:false,
+ matches:[{id:'kira',name:'Kira',breed:'Border collie',dist:'a 3 km',bg:'#D8E6E2'},{id:'nala',name:'Nala',breed:'Labradora',dist:'a 5 km',bg:'#F0E4C8'}],
+ matchPet:null,chatId:null,typing:false,
+ msgs:{kira:[{me:false,t:'¡Hola Firulais! ¿Te va un paseo por el Rosedal?'},{me:true,t:'¡Obvio! ¿Mañana 10 am?'},{me:false,t:'Perfecto, llevo agua para los dos'}]},
+ prefs:{paseos:true,juegos:true,adopcion:false,cria:false},dist:10
+};
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function petSvg(p){
+ if(p.cat) return `<svg class="pet" viewBox="0 0 200 200" role="img" aria-label="Ilustración de gato">
+  <polygon points="44,82 58,22 96,58" fill="${p.ear}"/><polygon points="156,82 142,22 104,58" fill="${p.ear}"/>
+  <circle cx="100" cy="110" r="62" fill="${p.fur}"/>
+  <ellipse cx="78" cy="102" rx="7" ry="10" fill="#1D1B2E"/><ellipse cx="122" cy="102" rx="7" ry="10" fill="#1D1B2E"/>
+  <polygon points="92,124 108,124 100,133" fill="#E58A9A"/>
+  <path d="M100 133 q-8 10 -16 4 M100 133 q8 10 16 4" stroke="#1D1B2E" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M60 126 L24 120 M60 134 L26 138 M140 126 L176 120 M140 134 L174 138" stroke="#1D1B2E" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+ return `<svg class="pet" viewBox="0 0 200 200" role="img" aria-label="Ilustración de perro">
+  <ellipse cx="48" cy="96" rx="22" ry="46" transform="rotate(18 48 96)" fill="${p.ear}"/><ellipse cx="152" cy="96" rx="22" ry="46" transform="rotate(-18 152 96)" fill="${p.ear}"/>
+  <circle cx="100" cy="104" r="62" fill="${p.fur}"/><ellipse cx="100" cy="136" rx="36" ry="27" fill="#FFF4E6"/>
+  <circle cx="78" cy="96" r="8" fill="#1D1B2E"/><circle cx="122" cy="96" r="8" fill="#1D1B2E"/>
+  <ellipse cx="100" cy="124" rx="12" ry="9" fill="#1D1B2E"/>
+  <path d="M100 133 v8 M100 141 q-10 8 -18 2 M100 141 q10 8 18 2" stroke="#1D1B2E" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
+}
+function card(p,back){
+ if(back) return `<div class="card back" style="background:${p.bg}"></div>`;
+ return `<article class="card" id="top">
+  <div class="photo" style="background:${p.bg}">${petSvg(p)}
+   <span class="pill" style="left:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1B2E" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>${p.dist} · ${p.hood}</span>
+   <span class="pill" style="right:16px">${p.photos}</span>
+   <span class="stamp like" id="sLike">ME GUSTA</span><span class="stamp nope" id="sNope">PASO</span><span class="stamp sup" id="sSup">¡SÚPER HUELLA!</span>
+  </div>
+  <div class="info">
+   <div style="display:flex;align-items:baseline;gap:10px"><h2>${p.name}</h2><span class="age">${p.age}</span></div>
+   <p class="breed">${p.breed}</p><p class="bio">${p.bio}</p>
+   <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+  </div></article>`;
+}
+const av=(m,size,fs,extra='')=>`<span class="av" style="width:${size}px;height:${size}px;background:${m.bg};font-size:${fs}px;${extra}">${m.name[0]}</span>`;
+const hasMsgs=m=>(S.msgs[m.id]||[]).length>0;
+
+function discover(){
+ const cur=PETS[S.idx],nxt=PETS[S.idx+1];
+ return `<section class="screen">
+ <header class="top"><div class="logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="var(--accent)" aria-hidden="true">${PAW}</svg><span>huellitas</span></div>
+  <button class="iconbtn" aria-label="Filtros" onclick="go('profile')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B2E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button></header>
+ <div class="deck">
+  ${nxt?card(nxt,true):''}${cur?card(cur):''}
+  ${!cur?`<div class="empty"><svg width="64" height="64" viewBox="0 0 24 24" fill="#D8D3CC" aria-hidden="true">${PAW}</svg><h2>No hay más huellitas cerca</h2><p>Ampliá la distancia en tu perfil o volvé más tarde.</p><button class="primary" onclick="restart()">Volver a empezar</button></div>`:''}
+ </div>
+ <div class="actions">
+  <button class="act s" aria-label="Deshacer" onclick="undo()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M3.5 13A9 9 0 1 0 6 6.3L3 9"/></svg></button>
+  <button class="act l" aria-label="Paso" onclick="swipe('left')"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="act s" aria-label="Súper huella" onclick="swipe('up')"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1F5FBF" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5-4.9-4.6 6.6-.8z"/></svg></button>
+  <button class="act l heart" aria-label="Me gusta" onclick="swipe('right')"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">${HEART}</svg></button>
+ </div></section>`;
+}
+function matches(){
+ const nw=S.matches.filter(m=>!hasMsgs(m)).reverse(), cv=S.matches.filter(hasMsgs).reverse();
+ return `<section class="screen scroll"><h1 class="title">Matches</h1>
+ <div style="padding:8px 0 4px"><h2 class="label">Nuevos matches</h2><div class="newrow">
+  ${nw.length?nw.map(m=>`<button class="newm" onclick="openChat('${m.id}')">${av(m,68,26,'border:3px solid var(--accent)')}<span style="font-size:13px;font-weight:700">${m.name}</span></button>`).join(''):'<p style="margin:0;font-size:14px;color:var(--muted)">Todavía no hay nuevos. ¡Seguí deslizando!</p>'}
+ </div></div>
+ <div style="padding:12px 0 16px"><h2 class="label" style="margin-bottom:6px">Mensajes</h2>
+  ${cv.map(m=>{const l=S.msgs[m.id],last=l[l.length-1];return `<button class="convo" onclick="openChat('${m.id}')">${av(m,56,22)}<span class="txt"><span style="font-size:16px;font-weight:800">${m.name}</span><span class="last">${last.me?'Vos: ':''}${esc(last.t)}</span></span></button>`}).join('')}
+ </div></section>`;
+}
+function chat(){
+ const m=S.matches.find(x=>x.id===S.chatId); const l=S.msgs[m.id]||[];
+ return `<section class="screen" style="background:#fff">
+ <header class="chathead"><button class="iconbtn" style="border:none" aria-label="Volver" onclick="go('matches')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1D1B2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  ${av(m,44,18)}<span style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:800">${m.name}</span><span style="font-size:12px;color:var(--muted)">${m.breed} · ${m.dist}</span></span></header>
+ <div class="msgs" id="msgs" style="background:var(--ground)">
+  <p style="margin:0 0 8px;align-self:center;font-size:12px;color:var(--muted);font-weight:700">Hicieron match con ${m.name} · Firulais</p>
+  ${l.map(x=>`<span class="b ${x.me?'me':'them'}">${esc(x.t)}</span>`).join('')}
+  ${S.typing?`<span class="b them" style="color:var(--muted);font-style:italic">${m.name} está escribiendo…</span>`:''}
+ </div>
+ <form class="composer" onsubmit="send(event)"><label for="mi" class="sr">Mensaje</label><input id="mi" placeholder="Proponé un paseo…" autocomplete="off">
+  <button type="submit" class="primary" style="width:48px;padding:0;display:flex;align-items:center;justify-content:center" aria-label="Enviar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+ </section>`;
+}
+function profile(){
+ const L={paseos:'Compañía de paseo',juegos:'Amigos para jugar',adopcion:'Adopción',cria:'Cruza responsable'};
+ return `<section class="screen scroll"><h1 class="title">Mi mascota</h1>
+ <div class="box" style="margin-top:8px;display:flex;align-items:center;gap:16px;padding:20px">${av({name:'F',bg:'#E9D8C4'},88,36)}
+  <span style="display:flex;flex-direction:column;gap:4px"><span class="disp" style="font-weight:600;font-size:24px">Firulais, 4</span><span style="font-size:14px;color:var(--muted);font-weight:700">Mestizo · Mediano</span><span style="font-size:13px;color:var(--accent);font-weight:800">Perfil 80% completo</span></span></div>
+ <div class="box" style="padding:8px 20px"><h2 style="margin:12px 0 4px;font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)">Qué busca</h2>
+  ${Object.keys(L).map(k=>`<div class="row"><span style="font-size:16px;font-weight:700">${L[k]}</span><button class="sw" aria-label="${L[k]}" aria-pressed="${S.prefs[k]}" onclick="togglePref('${k}')"><span></span></button></div>`).join('')}</div>
+ <div class="box" style="margin-bottom:24px;display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;justify-content:space-between"><label for="dist" style="font-size:16px;font-weight:700">Distancia máxima</label><span id="dl" style="font-size:16px;font-weight:800;color:var(--accent)">${S.dist} km</span></div>
+  <input id="dist" type="range" min="1" max="50" value="${S.dist}" style="width:100%;accent-color:var(--accent)" oninput="S.dist=+this.value;document.getElementById('dl').textContent=this.value+' km'"></div>
+ </section>`;
+}
+function tabs(){
+ const n=S.matches.filter(m=>!hasMsgs(m)).length;
+ const b=(id,label,icon)=>`<button class="${S.tab===id?'on':''}" onclick="go('${id}')">${icon}<span>${label}</span>${id==='matches'&&n?`<span class="badge">${n}</span>`:''}</button>`;
+ return `<nav class="tabs" aria-label="Navegación principal">
+ ${b('discover','Descubrir',`<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${PAW}</svg>`)}
+ ${b('matches','Matches','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>')}
+ ${b('profile','Perfil','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>')}
+ </nav>`;
+}
+function modal(){
+ const p=S.matchPet; if(!p) return '';
+ return `<div class="modal" role="dialog" aria-label="Nuevo match"><p class="big">¡Es un match!</p>
+ <p style="margin:0;font-size:16px;color:#E4E0DA;line-height:1.4">A Firulais y a ${p.name} les gustaron sus perfiles. ¿Arrancamos con un paseo?</p>
+ <div style="display:flex;align-items:center;margin:12px 0">${av({name:'F',bg:'#E9D8C4'},112,44,'border:4px solid #fff;transform:rotate(-6deg)')}
+  <span style="width:52px;height:52px;border-radius:26px;background:var(--accent);margin:0 -14px;z-index:2;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">${HEART}</svg></span>
+  ${av(p,112,44,'border:4px solid #fff;transform:rotate(6deg)')}</div>
+ <button class="wide primary" onclick="openChat('${p.id}')">Mandar un mensaje</button>
+ <button class="wide" style="border:2px solid #fff;background:none;color:#fff" onclick="S.matchPet=null;render()">Seguir buscando</button></div>`;
+}
+function render(){
+ const v={discover,matches,chat,profile}[S.tab]();
+ app.innerHTML=v+(S.tab!=='chat'?tabs():'')+modal();
+ if(S.tab==='discover') bindDrag();
+ if(S.tab==='chat'){const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight;}
+}
+function go(t){S.tab=t;S.typing=false;render();}
+function restart(){S.idx=0;S.history=[];render();}
+function undo(){
+ if(!S.history.length||S.busy) return;
+ const prev=S.history.pop(),p=PETS[prev];
+ S.matches=S.matches.filter(m=>m.id!==p.id||hasMsgs(m));
+ S.idx=prev;render();
+}
+function swipe(dir){
+ const p=PETS[S.idx],el=document.getElementById('top');
+ if(!p||!el||S.busy) return;
+ S.busy=true;
+ const st={right:'sLike',left:'sNope',up:'sSup'}[dir];document.getElementById(st).style.opacity=1;
+ el.classList.add('anim');
+ el.style.transform=dir==='up'?'translateY(-120%)':`translateX(${dir==='right'?150:-150}%) rotate(${dir==='right'?20:-20}deg)`;
+ el.style.opacity=0;
+ const back=document.querySelector('.card.back');if(back){back.style.transform='none';}
+ if(navigator.vibrate) navigator.vibrate(dir==='left'?10:20);
+ setTimeout(()=>{
+  S.history.push(S.idx);S.idx++;S.busy=false;
+  if(dir!=='left'&&(p.likesYou||dir==='up')){S.matches.push({id:p.id,name:p.name,breed:p.breed,dist:p.dist,bg:p.bg});S.matchPet=p;}
+  render();
+ },340);
+}
+function bindDrag(){
+ const el=document.getElementById('top'); if(!el) return;
+ let sx=0,sy=0,dx=0,dy=0,down=false;
+ const sl=document.getElementById('sLike'),sn=document.getElementById('sNope'),ss=document.getElementById('sSup');
+ el.addEventListener('pointerdown',e=>{if(S.busy)return;down=true;sx=e.clientX;sy=e.clientY;dx=dy=0;el.classList.remove('anim');el.setPointerCapture(e.pointerId);});
+ el.addEventListener('pointermove',e=>{
+  if(!down) return; dx=e.clientX-sx; dy=e.clientY-sy;
+  el.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/18}deg)`;
+  sl.style.opacity=Math.max(0,Math.min(1,dx/100));
+  sn.style.opacity=Math.max(0,Math.min(1,-dx/100));
+  ss.style.opacity=Math.abs(dx)<60?Math.max(0,Math.min(1,-dy/120)):0;
+ });
+ const end=()=>{
+  if(!down) return; down=false;
+  if(dx>110) return swipe('right');
+  if(dx<-110) return swipe('left');
+  if(dy<-140&&Math.abs(dx)<80) return swipe('up');
+  el.classList.add('anim');el.style.transform='';sl.style.opacity=sn.style.opacity=ss.style.opacity=0;
+ };
+ el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+}
+function openChat(id){S.chatId=id;S.matchPet=null;S.tab='chat';render();setTimeout(()=>document.getElementById('mi')?.focus(),50);}
+function send(e){
+ e.preventDefault();const i=document.getElementById('mi'),t=i.value.trim();if(!t)return;
+ const id=S.chatId;(S.msgs[id]=S.msgs[id]||[]).push({me:true,t});S.typing=true;render();document.getElementById('mi').focus();
+ setTimeout(()=>{S.msgs[id].push({me:false,t:REPLIES[Math.floor(Math.random()*REPLIES.length)]});S.typing=false;
+  if(S.tab==='chat'&&S.chatId===id){const v=document.getElementById('mi').value;render();const n=document.getElementById('mi');n.value=v;n.focus();}},1400);
+}
+function togglePref(k){S.prefs[k]=!S.prefs[k];render();}
+render();
+</script>
+</body>
+</html>
